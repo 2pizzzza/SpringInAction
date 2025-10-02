@@ -9,8 +9,7 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import javax.naming.AuthenticationException;
 
 public interface UserInterface {
-    JWTAuthenticationDTO login(UserCredentialsDTO userCredentialsDTO)  throws AuthenticationException
-            ;
+    JWTAuthenticationDTO login(UserCredentialsDTO userCredentialsDTO)  throws AuthenticationException;
     JWTAuthenticationDTO refreshToken(RefreshTokenDTO refreshTokenDTO) throws Exception;
     UserDTO getUserById(Long id) throws ChangeSetPersister.NotFoundException;
     UserDTO getUserByEmail(String email) throws ChangeSetPersister.NotFoundException;

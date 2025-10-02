@@ -10,6 +10,8 @@ import com.todo.demo.repository.UserRepository;
 import com.todo.demo.security.jwt.JwtService;
 import com.todo.demo.service.UserInterface;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -27,6 +29,8 @@ public class UserImpl implements UserInterface {
     private final UserMapper userMapper;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
+
+    private final static Logger logger = LoggerFactory.getLogger(UserImpl.class);
 
 
     @Override
