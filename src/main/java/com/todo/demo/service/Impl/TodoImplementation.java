@@ -25,6 +25,7 @@ public class TodoImplementation implements TodoInterface {
     @Override
     public Todo save(String title, String description) {
         Todo todo = new Todo(title, description);
+        todo.setUser_id(1L);
         return todoRepository.save(todo);
     }
 

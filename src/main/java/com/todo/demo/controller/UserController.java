@@ -14,6 +14,7 @@ public class UserController {
 
     @PostMapping("/register")
     public String register(@RequestBody UserDTO userDto){
+        System.out.println(userDto);
         return userImpl.register(userDto);
     }
 

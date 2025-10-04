@@ -18,6 +18,8 @@ public class Todo {
     private String title;
     private String description;
     private boolean isDone;
+    private Long user_id;
+
 
 
     public Todo (String title, String description) {

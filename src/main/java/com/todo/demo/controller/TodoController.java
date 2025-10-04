@@ -2,20 +2,27 @@ package com.todo.demo.controller;
 
 import com.todo.demo.dto.*;
 import com.todo.demo.model.Todo;
+import com.todo.demo.security.CustomUserDetails;
 import com.todo.demo.service.TodoInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@RestController("/api")
+@RestController
 public class TodoController {
     @Autowired
     private TodoInterface todoService;
 
-    @GetMapping("/hello")
+    private final static Logger logger = LoggerFactory.getLogger(TodoController.class);
+
+    @GetMapping("/")
     public String sayHello() {
         return "<h1>Hello world</h1>";
     }
@@ -31,25 +38,31 @@ public class TodoController {
     }
 
     @GetMapping( "/todos")
-    public ResponseEntity<Iterable<Todo>> getTodos() {
+    public ResponseEntity<Iterable<Todo>> getTodos(@AuthenticationPrincipal CustomUserDetails userDetails) {
         Iterable<Todo> todo = todoService.findAll();
         return ResponseEntity.ok(todo);
     }
 
     @PostMapping("/todo")
-    public ResponseEntity<? >saveTodo(@RequestBody TodoCreateRequest req){
+    public ResponseEntity<? >saveTodo(
+            @RequestBody TodoCreateRequest req,
+            Authentication authentication) {
         if (req == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Todo should not be empty"));
         }
         if (req.getTitle() == null || req.getTitle().isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Title should not be empty"));
         }
+
+        String email = authentication.getName();
+        logger.info(email);
         todoService.save(req.getTitle(), req.getDescription());
         return ResponseEntity.ok(new TodoCreateResponse("Successfully created", req));
     }
 
     @DeleteMapping("/todo/{id}")
-    public ResponseEntity<?> deleteTodo(@PathVariable("id") Long id){
+    public ResponseEntity<?> deleteTodo(@PathVariable("id") Long id,
+                                        Authentication authentication){
         if (id == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Id should not be empty"));
         }
@@ -63,7 +76,8 @@ public class TodoController {
     }
 
     @PatchMapping("/todo/{id}")
-    public ResponseEntity<?> updateTodo(@PathVariable("id") Long id, @RequestBody TodoUpdateRequest req){
+    public ResponseEntity<?> updateTodo(@PathVariable("id") Long id, @RequestBody TodoUpdateRequest req,
+                                        Authentication authentication){
         if (id == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse("Id should not be empty"));
         }

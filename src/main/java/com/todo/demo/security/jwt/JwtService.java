@@ -88,7 +88,7 @@ public class JwtService {
     private String generateRefreshToken(String email) {
         return Jwts.builder()
                 .subject(email)
-                .expiration(new Date(System.currentTimeMillis() + refreshExpiration))
+                .expiration(new Date(System.currentTimeMillis()+ refreshExpiration*20))
                 .signWith(getSignInKey())
                 .compact();
 
