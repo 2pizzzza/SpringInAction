@@ -1,6 +1,5 @@
 package com.todo.demo.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,9 +17,7 @@ public class Todo {
     private String title;
     private String description;
     private boolean isDone;
-    private Long user_id;
-
-
+    private Long userId;
 
     public Todo (String title, String description) {
         this.title = title;

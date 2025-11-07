@@ -4,14 +4,16 @@ import com.todo.demo.model.Todo;
 
 public interface TodoInterface {
 
-    public Todo findById(Long id);
+     Todo findById(Long id);
 
-    public Iterable<Todo> findAll();
+     Iterable<Todo> findAllTodosByUserId(String email);
 
-    public Todo save(String title, String description);
+     Iterable<Todo> findAll();
 
-    public Long deleteById(Long id);
+     Todo save(String title, String description, String email);
 
-    public Todo complete(Long id, Boolean done);
+     Long deleteById(Long id);
+
+     Todo complete(Long id, Boolean done);
 
 }

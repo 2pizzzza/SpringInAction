@@ -43,8 +43,15 @@ public class TodoController {
         return ResponseEntity.ok(todo);
     }
 
+    @GetMapping("/todos/auth")
+    public ResponseEntity<Iterable<Todo>> getTodosByUserId(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        String email = userDetails.getUsername();
+        Iterable<Todo> todos = todoService.findAllTodosByUserId(email);
+        return ResponseEntity.ok(todos);
+    }
+
     @PostMapping("/todo")
-    public ResponseEntity<? >saveTodo(
+    public ResponseEntity<?>saveTodo(
             @RequestBody TodoCreateRequest req,
             Authentication authentication) {
         if (req == null){
@@ -56,7 +63,7 @@ public class TodoController {
 
         String email = authentication.getName();
         logger.info(email);
-        todoService.save(req.getTitle(), req.getDescription());
+        todoService.save(req.getTitle(), req.getDescription(), email);
         return ResponseEntity.ok(new TodoCreateResponse("Successfully created", req));
     }
 

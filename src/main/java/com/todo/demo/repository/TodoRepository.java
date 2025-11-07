@@ -10,6 +10,9 @@ public interface TodoRepository extends CrudRepository<Todo, Long> {
 
     @Modifying
     @Query("UPDATE todo SET is_done = :done WHERE id = :id")
-    public int updateTodo(@Param("id") Long id, @Param("done") Boolean done);
+    int updateTodo(@Param("id") Long id, @Param("done") Boolean done);
+
+    @Query("SELECT id, title, description, is_done, user_id FROM todo  WHERE user_id = :id")
+    Iterable<Todo> findTodosByUserId(@Param("id") Long id);
 
 }
